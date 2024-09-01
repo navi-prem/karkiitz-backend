@@ -4,8 +4,10 @@ const addCar = `
 INSERT INTO 
     Cars (uid, make, model, year, license_plate)
 VALUES 
-    ($1, $2, $3, $4, $5);
-`;
+    ($1, $2, $3, $4, $5)
+RETURNING
+    *
+;`;
 const getCars = `SELECT * FROM Cars WHERE uid = $1;`
 
 export default { deleteCar, getCar, addCar, getCars }

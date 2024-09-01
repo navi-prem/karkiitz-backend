@@ -18,7 +18,7 @@ CREATE TABLE Cars (
     make VARCHAR(50) NOT NULL,
     model VARCHAR(50) NOT NULL,
     year INT CHECK (year >= 1900 AND year <= EXTRACT(YEAR FROM CURRENT_DATE)),
-    license_plate VARCHAR(15) UNIQUE NOT NULL
+    license_plate VARCHAR(15) NOT NULL
 );
 
 -- Slots Table
