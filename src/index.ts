@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 
-import { Car, User } from './routes'
+import { Slot, Car, User } from './routes'
 
 dotenv.config();
 
@@ -25,6 +25,7 @@ app.use(cookieParser())
 
 app.use(User.BASE_ROUTE, User.router)
 app.use(Car.BASE_ROUTE, Car.router)
+app.use(Slot.BASE_ROUTE, Slot.router)
 
 app.get("/hello-world", (_: Request, res: Response) => {
     return res.send("<h1>Hello World!</h1>");

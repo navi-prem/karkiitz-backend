@@ -1,20 +1,4 @@
-const createSlots = `
-            DO $$
-            DECLARE
-                start_hour TIME := '09:00:00';
-                end_hour TIME := '22:00:00';
-                slot_time TIME;
-                slot_date DATE := $1;
-            BEGIN
-                slot_time := start_hour;
-                WHILE slot_time <= end_hour LOOP
-                    INSERT INTO Slots (slot_date, hour, status)
-                    VALUES (slot_date, slot_time, 'available')
-                    ON CONFLICT (slot_date, hour) DO NOTHING;
-                    slot_time := slot_time + INTERVAL '1 hour';
-                END LOOP;
-            END $$;
-        `;
+const createSlots = `SELECT create_slots($1);`;
 
 const markAsBooked = `
 UPDATE 
@@ -22,8 +6,11 @@ UPDATE
 SET 
     status = 'booked'
 WHERE
-    sid = $1;
+    sid = $1 AND status = 'available'
+RETURNING
+    *;
 `;
+
 const deleteSlot = "DELETE FROM Slots WHERE sid = $1;"
 const deleteSlots = `DELETE FROM Slots
             WHERE slot_date = $1;`

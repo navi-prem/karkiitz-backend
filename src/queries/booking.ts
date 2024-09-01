@@ -2,7 +2,10 @@ const addBooking = `
 INSERT INTO
     Bookings (uid, cid, sid, pickup_address, status)
 VALUES 
-    ($1, $2, $3, $4, $5);`;
+    ($1, $2, $3, $4, 'pending')
+RETURNING
+    *
+;`;
 
 const cancel = `
 UPDATE 

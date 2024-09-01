@@ -40,3 +40,20 @@ CREATE TABLE Bookings (
     pickup_address TEXT NOT NULL,
     status VARCHAR(20) CHECK (status IN ('pending', 'completed', 'canceled')) NOT NULL
 );
+
+CREATE OR REPLACE FUNCTION create_slots(sdate DATE)
+RETURNS VOID AS $$
+DECLARE
+    start_hour TIME := '09:00:00';
+    end_hour TIME := '22:00:00';
+    slot_time TIME;
+BEGIN
+    slot_time := start_hour;
+    WHILE slot_time <= end_hour LOOP
+        INSERT INTO Slots (slot_date, hour, status)
+        VALUES (sdate, slot_time, 'available')
+        ON CONFLICT (slot_date, hour) DO NOTHING;
+        slot_time := slot_time + INTERVAL '30 minutes';
+    END LOOP;
+END;
+$$ LANGUAGE plpgsql;
